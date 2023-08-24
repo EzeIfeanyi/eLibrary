@@ -8,7 +8,9 @@ namespace eLibrary
     {
         public MapperProfile()
         {
-            CreateMap<SignUpViewModel, User>();
+            CreateMap<SignUpViewModel, User>()
+                .ForMember(user => user.Email, o => o.MapFrom(s => s.Email))
+                .ForMember(user => user.UserName, o => o.MapFrom(s => s.Email));
         }
     }
 }

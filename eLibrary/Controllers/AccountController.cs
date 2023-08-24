@@ -47,7 +47,7 @@ namespace eLibrary.Controllers
 
             var response = await _accountService.SignInAsync(user, model.Password);
 
-            return View();
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
@@ -57,13 +57,21 @@ namespace eLibrary.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> SignUpAsync(SignUpViewModel model)
+        public async Task<ActionResult> SignUp(SignUpViewModel model)
         {
+            if (!ModelState.IsValid) return View(ModelState);
+
+            if (model.Password != model.ConfirmPassword)
+            {
+                ModelState.AddModelError("Password Mismatch", "ConfirmPassword is different from Password");
+                return View(model);
+            }
+
             var user = _mapper.Map<SignUpViewModel, User>(model);
 
             var isRegister = await _accountService.SignUpAsync(user, model.Password);
 
-            return isRegister ? RedirectToAction("Index", "Home") : View(model);
+            return isRegister ? RedirectToAction("SignIn", "Account") : View(model);
         }
 
         public async Task<IActionResult> LogOut()

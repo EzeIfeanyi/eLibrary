@@ -11,7 +11,7 @@ public class SignUpViewModel
 
     [Required]
     [DataType(DataType.EmailAddress)]
-    [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+    [RegularExpression("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
         ErrorMessage ="Invalid Email format")]
     public string Email { get; set; }
 

@@ -9,19 +9,20 @@ public class AccountService : IAccountService
 {
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
-    private readonly RoleManager<User> _roleManager;
-    private ILogger<AccountService> _logger;
+    //private readonly RoleManager<IdentityRole> _roleManager;
+    //private readonly ILogger<AccountService> _logger;
 
     public AccountService(
         UserManager<User> userManager,
-        SignInManager<User> signInManager,
-        RoleManager<User> roleManager,
-        ILogger<AccountService> logger)
+        SignInManager<User> signInManager
+        //RoleManager<User> roleManager,
+        //ILogger<AccountService> logger
+        )
     {
         _userManager = userManager;
         _signInManager = signInManager;
-        _roleManager = roleManager;
-        _logger = logger;
+        //_roleManager = roleManager;
+        //_logger = logger;
     }
 
     public async Task<bool> SignInAsync(

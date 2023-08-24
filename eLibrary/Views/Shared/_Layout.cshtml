@@ -16,15 +16,15 @@
     <link rel="stylesheet" href="~/eLibrary.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
-        <div class="container-fluid">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">eLibrary</a>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow px-5">
+        <div class="container-fluid d-flex flex-row justify-content-between" >
+            <a class="col navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><h2>eLibrary</h2></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
+            <div class="col navbar-collapse collapse d-sm-inline-flex justify-content-between" >
+                <ul class="navbar-nav d-flex justify-content-end align-items-center flex-grow-1">
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
@@ -39,12 +39,19 @@
                     }
                     else
                     {
+                        @if (userManager.IsInRoleAsync(signInManager.UserManager.GetUserAsync(User).Result!, "admin").Result)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="AddBook">Add Book</a>
+                            </li>
+                        }
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="SignOut">Signout</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogOut">Signout</a>
                         </li>
                         <li class="nav-item">
-                            <h4>@User.Identity!.Name </h4>
+                            <span><em><b>@User.Identity!.Name</b></em> </span>
                         </li>
+                        
                     }
                 </ul>
             </div>
