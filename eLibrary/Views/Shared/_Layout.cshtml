@@ -4,6 +4,10 @@
 @inject UserManager<User> userManager;
 @inject SignInManager<User> signInManager;
 
+@{
+    var user = signInManager.UserManager.GetUserAsync(User).Result!;
+}
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -31,7 +35,7 @@
                     @if (!signInManager.IsSignedIn(User))
                     {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="SignIn">Signin</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Signin</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="SignUp">Signup</a>
@@ -39,7 +43,7 @@
                     }
                     else
                     {
-                        @if (userManager.IsInRoleAsync(signInManager.UserManager.GetUserAsync(User).Result!, "admin").Result)
+                        @if (userManager.IsInRoleAsync(user, "admin").Result)
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="AddBook">Add Book</a>

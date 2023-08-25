@@ -14,6 +14,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAutoMapper(typeof(MapperProfile));
 
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IMessanger, EmailMessanger>();
 
 builder.Services.AddDbContext<eLibraryDbContext>( options =>
 {

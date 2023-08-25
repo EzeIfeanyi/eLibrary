@@ -1,5 +1,9 @@
 ﻿@model SignInViewModel
 
+@{
+    var returnUrl = ViewBag.ReturnUrl ?? "/";
+}
+
 <section class="d-flex flex-row w-100 justify-content-center align-items-center" style="position: absolute; top: 0; height: 100%;">
     <div class="col-md-6 h-75 p-5 rounded-3 d-flex flex-column align-items-center">
         <div class="row mb-5">
@@ -7,7 +11,7 @@
         </div>
         <div class="col-12">
             <div asp-validation-summary="ModelOnly"></div>
-            <form method="post" asp-controller="Account" asp-action="SignIn">
+            <form method="post" asp-controller="Account" asp-action="Login" asp-route-ReturnUrl="@returnUrl">
                 <div class="mb-4">
                     <label asp-for="UserName" class="form-label">Username</label>
                     <input type="text" asp-for="UserName" class="form-control"/>
@@ -25,7 +29,7 @@
                         <input asp-for="RememberMe" class="form-check-input" />
                         <label class="form-check-label">Remember me</label>
                     </div>
-                    <a class="col text-decoration-none text-end"  href="#">Forgot Password?</a>
+                    <a class="col text-decoration-none text-end"  asp-controller="Account" asp-action="ForgotPassword">Forgot Password?</a>
                 </div>
 
                 <div class="d-flex flex-column justify-content-center pb-3">
