@@ -1,4 +1,4 @@
-﻿namespace eLibrary.Models.Entities;
+﻿namespace eLibrary_APIs.Models;
 
 public class Book
 {

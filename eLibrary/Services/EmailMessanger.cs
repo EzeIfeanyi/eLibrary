@@ -1,5 +1,4 @@
-﻿using static System.Net.Mime.MediaTypeNames;
-using System.Net.Mail;
+﻿using System.Net.Mail;
 using System.Net;
 using eLibrary.Services.IServices;
 
@@ -34,10 +33,12 @@ public class EmailMessanger : IMessanger
                 myMail.Attachments.Add(attachment);
                 myMail.Priority = MailPriority.High;
             }
-            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
-            smtpClient.EnableSsl = true;
-            smtpClient.UseDefaultCredentials = false;
-            smtpClient.Credentials = new NetworkCredential(GmailAccount, GmailPassword);
+            SmtpClient smtpClient = new("smtp.gmail.com", 587)
+            {
+                EnableSsl = true,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(GmailAccount, GmailPassword)
+            };
             smtpClient.Send(myMail);
 
             return "";
