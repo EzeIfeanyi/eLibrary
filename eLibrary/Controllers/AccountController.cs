@@ -39,7 +39,7 @@ namespace eLibrary.Controllers
             if (_accountService.IsSignedIn(User))
                 return RedirectToAction("Index", "Home");
 
-            //ViewBag.ReturnUrl = ReturnUrl;
+            ViewBag.ReturnUrl = ReturnUrl;
 
             return View();
         }
@@ -58,7 +58,7 @@ namespace eLibrary.Controllers
             if (!ModelState.IsValid)
                 return View(ModelState);
 
-            var response = await _accountService.SignInAsync(user, model.Password);
+            var response = await _accountService.SignInAsync(user, model.Password, model.RememberMe);
 
             var returnUrl = !string.IsNullOrEmpty(ReturnUrl);
 
@@ -128,7 +128,7 @@ namespace eLibrary.Controllers
 
                     var body = $@"<h1>Recovery Link</h1>
                                     <p>Hi {user.FirstName}</p> 
-                                    <p>Use this link to reset your password</p> {passwordResetLink}";
+                                    <p>Use this link to reset your password. <a href=""{passwordResetLink}"">Click Here</a></p> ";
 
                     _ = _messanger.Send("Password Reset", model.Email, body, "");
 
@@ -158,11 +158,21 @@ namespace eLibrary.Controllers
 
             var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
 
+            if (user == null)
+            {
+                ModelState.AddModelError("Wrong Email", "Invalid Email address");
+                return View(model);
+            }
+
             var response = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
 
-            if (response != null)
+            if (!response.Succeeded)
             {
-
+               foreach (var err in response.Errors)
+               {
+                    ModelState.AddModelError(err.Code, err.Description);
+                    return View(model);
+               }
             }
             ViewData["reset"] = true;
 

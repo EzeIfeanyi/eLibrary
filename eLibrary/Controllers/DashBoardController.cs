@@ -6,25 +6,25 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eLibrary.Controllers
 {
-    public class BookController : Controller
+    [Authorize(Roles = "admin")]
+    public class DashBoardController : Controller
     {
         private readonly UserManager<User> _userManager;
 
-        public BookController(UserManager<User> userManager)
+        public DashBoardController(UserManager<User> userManager)
         {
             _userManager = userManager;
         }
 
         [HttpGet]
-        [Authorize(Roles ="admin")]
-        public async Task<IActionResult> AddBook()
+        public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var book = new Book
+            {
 
-            //if (!await _userManager.IsInRoleAsync(user, "admin") )
-            //{
-            //    RedirectToAction("Index", "Home");
-            //}
+            };
+
+
 
             return View();
         }

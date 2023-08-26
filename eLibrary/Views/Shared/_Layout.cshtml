@@ -46,7 +46,7 @@
                         @if (userManager.IsInRoleAsync(user, "admin").Result)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="AddBook">Add Book</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="DashBoard" asp-action="Index">DashBoard</a>
                             </li>
                         }
                         <li class="nav-item">
