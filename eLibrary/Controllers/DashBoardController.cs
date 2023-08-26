@@ -28,11 +28,5 @@ namespace eLibrary.Controllers
 
             return View();
         }
-        [HttpPost]
-        [Authorize]
-        public IActionResult AddBook(BookViewModel model)
-        {
-            return View();
-        }
     }
 }
