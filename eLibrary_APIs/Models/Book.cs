@@ -1,8 +1,7 @@
 ﻿namespace eLibrary_APIs.Models;
 
-public class Book
+public class Book : BaseEntity
 {
-    public string Id { get; set; } = Guid.NewGuid().ToString();
     public string Title { get; set; }
     public string Description { get; set; }
     public string Image { get; set; }

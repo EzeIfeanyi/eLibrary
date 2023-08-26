@@ -1,8 +1,7 @@
 ﻿namespace eLibrary_APIs.Models
 {
-    public class Rating
+    public class Rating : BaseEntity
     {
-        public string Id { get; set; } = Guid.NewGuid().ToString();
         public string BookId { get; set; }
         public int NumberOfStar { get; set; }
     }

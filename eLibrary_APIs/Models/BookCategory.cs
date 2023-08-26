@@ -1,8 +1,7 @@
 ﻿namespace eLibrary_APIs.Models
 {
-    public class BookCategory
+    public class BookCategory : BaseEntity
     {
-        public string Id { get; set; } = Guid.NewGuid().ToString();
         public string BookId { get; set; }
         public Category Category { get; set; }
     }
