@@ -12,7 +12,7 @@ using eLibrary.Data;
 namespace eLibrary.Migrations
 {
     [DbContext(typeof(eLibraryDbContext))]
-    [Migration("20230823110047_InitialMigration")]
+    [Migration("20230827144013_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />

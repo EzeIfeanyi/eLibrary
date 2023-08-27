@@ -8,11 +8,8 @@ namespace eLibrary_APIs.DataAccess
         public ApiDbContext(DbContextOptions<ApiDbContext> options) : base(options) { }
 
         public DbSet<Book> Books { get; set; }
-        public DbSet<BookCategory> BookCategories { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Rating> Ratings { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Genre> Genres { get; set; }
-        public DbSet<BookGenre> BookGenres { get; set; }
     }
 }

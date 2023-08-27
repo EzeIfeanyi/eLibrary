@@ -1,33 +1,62 @@
-﻿using eLibrary_APIs.DataAccess.Repo;
-using eLibrary_APIs.Models;
+﻿using eLibrary_APIs.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace eLibrary_APIs.DataAccess.Services
 {
     public class BookService : IBookService
     {
-        private readonly IItemRepository<Book> _bookRepo;
-        private readonly IItemRepository<BookCategory> _bookCategoryRepo;
-        private readonly IItemRepository<Category> _categoryRepo;
-        private readonly IItemRepository<Review> _reviewRepo;
-        private readonly IItemRepository<Rating> _ratingRepo;
+        private readonly ApiDbContext _context;
 
-        public BookService(
-            IItemRepository<Book> bookRepo, 
-            IItemRepository<BookCategory> bookCategoryRepo, 
-            IItemRepository<Category> categoryRepo, 
-            IItemRepository<Review> reviewRepo, 
-            IItemRepository<Rating> ratingRepo)
+        public BookService(ApiDbContext context)
         {
-            _bookRepo = bookRepo;
-            _bookCategoryRepo = bookCategoryRepo;
-            _categoryRepo = categoryRepo;
-            _reviewRepo = reviewRepo;
-            _ratingRepo = ratingRepo;
+            _context = context;
         }
 
         public async Task<IEnumerable<Book>> GetAllBooks()
         {
-            return await _bookRepo.GetAllAsync();
+            return await _context.Books
+                .Include( b => b.Reviews )
+                .Include( b => b.Genre )
+                .ToListAsync();
+        }
+
+        public async Task<Book> GetBookById(string Id)
+        {
+            var books = await GetAllBooks();
+            return books.FirstOrDefault(book => book.Id == Id)!;
+        }
+
+        public async Task<IEnumerable<Book>> SearchForBook(
+            string Title = "",
+            string Description = "",
+            string Author = "",
+            string ISBN = "")
+        {
+            return (await GetAllBooks())
+                .Where(
+                book => book.Title.ToLower().Contains(Title.ToLower()) || 
+                book.Description.ToLower().Contains(Description.ToLower()) ||
+                book.Author.ToLower().Contains(Author.ToLower()) ||
+                book.Isbn == ISBN
+                ).ToList();
+        }
+
+        public async Task AddBookAsync(Book book)
+        {
+            await _context.Books.AddAsync(book);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateBook(Book book)
+        {
+            _context.Entry(book).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteBook(Book book)
+        {
+            _context.Books.Remove(book);
+            await _context.SaveChangesAsync();
         }
     }
 }

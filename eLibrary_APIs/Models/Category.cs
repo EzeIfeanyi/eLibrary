@@ -1,7 +1,11 @@
-﻿namespace eLibrary_APIs.Models
+﻿namespace eLibrary_APIs.Models;
+
+public class Category: BaseEntity
 {
-    public class Category : BaseEntity
-    {
-        public string Name { get; set; }
-    }
+    public string Id { get; set; }
+    public string Name { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
+
+    public ICollection<Genre> Genres { get; set; }
 }

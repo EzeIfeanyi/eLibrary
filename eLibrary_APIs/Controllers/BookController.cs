@@ -1,6 +1,10 @@
-﻿using eLibrary_APIs.DataAccess.Services;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using eLibrary_APIs.DataAccess;
+using eLibrary_APIs.DataAccess.Services;
+using eLibrary_APIs.Models;
+using eLibrary_APIs.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace eLibrary_APIs.Controllers
 {
@@ -9,9 +13,21 @@ namespace eLibrary_APIs.Controllers
     public class BookController : ControllerBase
     {
         private readonly IBookService _bookService;
-        public BookController(IBookService bookService)
+        private readonly IMapper _mapper;
+        public BookController(IBookService bookService, IMapper mapper)
         {
             _bookService = bookService;
+            _mapper = mapper;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddBook([FromBody] BookDto model)
+        {
+            var book = _mapper.Map<BookDto, Book>(model);
+
+            await _bookService.AddBookAsync(book);
+
+            return Ok();
         }
 
         [HttpGet("AllItem")]
@@ -19,5 +35,7 @@ namespace eLibrary_APIs.Controllers
         {
             return Ok(await _bookService.GetAllBooks());
         }
+
+
     }
 }

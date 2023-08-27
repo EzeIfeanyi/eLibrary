@@ -34,18 +34,23 @@ namespace eLibrary_APIs.Migrations
                     b.Property<int>("AvailableCopies")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("CreatedAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("GenreId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Isbn")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Language")
@@ -55,7 +60,7 @@ namespace eLibrary_APIs.Migrations
                     b.Property<int>("NumOfPages")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("PublishedAt")
+                    b.Property<DateTime>("PublishedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
@@ -65,54 +70,14 @@ namespace eLibrary_APIs.Migrations
                     b.Property<int>("TotalCopies")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Books");
-                });
-
-            modelBuilder.Entity("eLibrary_APIs.Models.BookCategory", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("BookId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CategoryId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookId")
-                        .IsUnique();
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("BookCategories");
-                });
-
-            modelBuilder.Entity("eLibrary_APIs.Models.BookGenre", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("BookId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("GenreId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookId");
-
                     b.HasIndex("GenreId");
 
-                    b.ToTable("BookGenres");
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("eLibrary_APIs.Models.Category", b =>
@@ -120,9 +85,15 @@ namespace eLibrary_APIs.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -134,31 +105,25 @@ namespace eLibrary_APIs.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("CategoryId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Genres");
-                });
-
-            modelBuilder.Entity("eLibrary_APIs.Models.Rating", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("BookId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("NumberOfStar")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookId");
-
-                    b.ToTable("Ratings");
                 });
 
             modelBuilder.Entity("eLibrary_APIs.Models.Review", b =>
@@ -167,18 +132,23 @@ namespace eLibrary_APIs.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("BookId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Created")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -187,60 +157,52 @@ namespace eLibrary_APIs.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("eLibrary_APIs.Models.BookCategory", b =>
+            modelBuilder.Entity("eLibrary_APIs.Models.Book", b =>
                 {
-                    b.HasOne("eLibrary_APIs.Models.Book", "Book")
-                        .WithOne("BookCategoriess")
-                        .HasForeignKey("eLibrary_APIs.Models.BookCategory", "BookId")
+                    b.HasOne("eLibrary_APIs.Models.Genre", "Genre")
+                        .WithMany("Books")
+                        .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("eLibrary_APIs.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
-
-                    b.Navigation("Book");
-
-                    b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("eLibrary_APIs.Models.BookGenre", b =>
-                {
-                    b.HasOne("eLibrary_APIs.Models.Book", null)
-                        .WithMany("BookGenre")
-                        .HasForeignKey("BookId");
-
-                    b.HasOne("eLibrary_APIs.Models.Genre", "Genre")
-                        .WithMany()
-                        .HasForeignKey("GenreId");
 
                     b.Navigation("Genre");
                 });
 
-            modelBuilder.Entity("eLibrary_APIs.Models.Rating", b =>
+            modelBuilder.Entity("eLibrary_APIs.Models.Genre", b =>
                 {
-                    b.HasOne("eLibrary_APIs.Models.Book", null)
-                        .WithMany("Ratings")
-                        .HasForeignKey("BookId");
+                    b.HasOne("eLibrary_APIs.Models.Category", "Category")
+                        .WithMany("Genres")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("eLibrary_APIs.Models.Review", b =>
                 {
-                    b.HasOne("eLibrary_APIs.Models.Book", null)
+                    b.HasOne("eLibrary_APIs.Models.Book", "Book")
                         .WithMany("Reviews")
-                        .HasForeignKey("BookId");
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
                 });
 
             modelBuilder.Entity("eLibrary_APIs.Models.Book", b =>
                 {
-                    b.Navigation("BookCategoriess")
-                        .IsRequired();
-
-                    b.Navigation("BookGenre");
-
-                    b.Navigation("Ratings");
-
                     b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("eLibrary_APIs.Models.Category", b =>
+                {
+                    b.Navigation("Genres");
+                });
+
+            modelBuilder.Entity("eLibrary_APIs.Models.Genre", b =>
+                {
+                    b.Navigation("Books");
                 });
 #pragma warning restore 612, 618
         }
