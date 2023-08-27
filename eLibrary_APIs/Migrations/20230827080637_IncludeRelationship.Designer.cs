@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eLibrary_APIs.DataAccess;
 
@@ -11,9 +12,11 @@ using eLibrary_APIs.DataAccess;
 namespace eLibrary_APIs.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230827080637_IncludeRelationship")]
+    partial class IncludeRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,6 +41,10 @@ namespace eLibrary_APIs.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Genre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -79,7 +86,6 @@ namespace eLibrary_APIs.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("BookId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CategoryId")
@@ -87,32 +93,11 @@ namespace eLibrary_APIs.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookId")
-                        .IsUnique();
+                    b.HasIndex("BookId");
 
                     b.HasIndex("CategoryId");
 
                     b.ToTable("BookCategories");
-                });
-
-            modelBuilder.Entity("eLibrary_APIs.Models.BookGenre", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("BookId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("GenreId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookId");
-
-                    b.HasIndex("GenreId");
-
-                    b.ToTable("BookGenres");
                 });
 
             modelBuilder.Entity("eLibrary_APIs.Models.Category", b =>
@@ -127,20 +112,6 @@ namespace eLibrary_APIs.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("eLibrary_APIs.Models.Genre", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Genres");
                 });
 
             modelBuilder.Entity("eLibrary_APIs.Models.Rating", b =>
@@ -189,32 +160,15 @@ namespace eLibrary_APIs.Migrations
 
             modelBuilder.Entity("eLibrary_APIs.Models.BookCategory", b =>
                 {
-                    b.HasOne("eLibrary_APIs.Models.Book", "Book")
-                        .WithOne("BookCategoriess")
-                        .HasForeignKey("eLibrary_APIs.Models.BookCategory", "BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("eLibrary_APIs.Models.Book", null)
+                        .WithMany("BookCategoriess")
+                        .HasForeignKey("BookId");
 
                     b.HasOne("eLibrary_APIs.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId");
 
-                    b.Navigation("Book");
-
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("eLibrary_APIs.Models.BookGenre", b =>
-                {
-                    b.HasOne("eLibrary_APIs.Models.Book", null)
-                        .WithMany("BookGenre")
-                        .HasForeignKey("BookId");
-
-                    b.HasOne("eLibrary_APIs.Models.Genre", "Genre")
-                        .WithMany()
-                        .HasForeignKey("GenreId");
-
-                    b.Navigation("Genre");
                 });
 
             modelBuilder.Entity("eLibrary_APIs.Models.Rating", b =>
@@ -233,10 +187,7 @@ namespace eLibrary_APIs.Migrations
 
             modelBuilder.Entity("eLibrary_APIs.Models.Book", b =>
                 {
-                    b.Navigation("BookCategoriess")
-                        .IsRequired();
-
-                    b.Navigation("BookGenre");
+                    b.Navigation("BookCategoriess");
 
                     b.Navigation("Ratings");
 

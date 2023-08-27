@@ -6,8 +6,6 @@ public class Book : BaseEntity
     public string Description { get; set; }
     public string Image { get; set; }
     public string Author { get; set; }
-    public string Genre { get; set; }
-    public string Category { get; set; }
     public string Language { get; set; }
     public string? Isbn { get; set; }
     public int AvailableCopies { get; set; }
@@ -16,4 +14,8 @@ public class Book : BaseEntity
     public DateTime? PublishedAt { get; set; }
     public DateTime? CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
+    public ICollection<BookGenre> BookGenre { get; set; }
+    public ICollection<Rating> Ratings { get; set;}
+    public ICollection<Review> Reviews { get; set; }
+    public BookCategory BookCategoriess { get; set; }
 }

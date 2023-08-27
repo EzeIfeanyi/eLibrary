@@ -1,5 +1,6 @@
 using eLibrary_APIs.DataAccess;
 using eLibrary_APIs.DataAccess.Repo;
+using eLibrary_APIs.DataAccess.Services;
 using eLibrary_APIs.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +18,7 @@ builder.Services.AddScoped<IItemRepository<BookCategory>, ItemRepository<BookCat
 builder.Services.AddScoped<IItemRepository<Category>, ItemRepository<Category>>();
 builder.Services.AddScoped<IItemRepository<Review>, ItemRepository<Review>>();
 builder.Services.AddScoped<IItemRepository<Rating>, ItemRepository<Rating>>();
+builder.Services.AddScoped<IBookService, BookService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

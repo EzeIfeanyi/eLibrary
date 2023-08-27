@@ -12,5 +12,7 @@ namespace eLibrary_APIs.DataAccess
         public DbSet<Category> Categories { get; set; }
         public DbSet<Rating> Ratings { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<Genre> Genres { get; set; }
+        public DbSet<BookGenre> BookGenres { get; set; }
     }
 }
