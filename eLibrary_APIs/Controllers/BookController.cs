@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using eLibrary_APIs.DataAccess;
 using eLibrary_APIs.DataAccess.Services;
 using eLibrary_APIs.Models;
 using eLibrary_APIs.Models.DTOs;
@@ -12,10 +13,12 @@ namespace eLibrary_APIs.Controllers
     {
         private readonly IBookService _bookService;
         private readonly IMapper _mapper;
-        public BookController(IBookService bookService, IMapper mapper)
+        private readonly ApiDbContext _context;
+        public BookController(IBookService bookService, IMapper mapper, ApiDbContext context)
         {
             _bookService = bookService;
             _mapper = mapper;
+            _context = context;
         }
 
         [HttpPost("add")]
@@ -53,10 +56,32 @@ namespace eLibrary_APIs.Controllers
             return Ok(await _bookService.SearchForBook(searchTerm));
         }
 
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> Update(string id, [FromBody] BookDto model)
+        {
+            var book = await _context.Books.FindAsync(id);
+
+            if (book  != null)
+            {
+                book = _mapper.Map<BookDto, Book>(model);
+
+                await _bookService.UpdateBook(book);
+
+                return Ok();
+            }
+            return BadRequest();
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(string id)
         {
+            var book = await _context.Books.FindAsync(id);
 
+            if (book == null)
+                return NotFound("User not found");
+
+            await _bookService.DeleteBook(book);
+            return Ok();
         }
 
 

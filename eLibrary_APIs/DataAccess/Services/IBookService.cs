@@ -6,7 +6,7 @@ namespace eLibrary_APIs.DataAccess.Services
     {
         Task<IEnumerable<Book>> GetAllBooks();
         Task<Book> GetBookById(string Id);
-        Task<IEnumerable<Book>> SearchForBook(string Title = "", string Description = "", string Author = "", string ISBN = "");
+        Task<IEnumerable<Book>> SearchForBook(string searchTerm);
         Task AddBookAsync(Book book);
         Task UpdateBook(Book book);
         Task DeleteBook(Book book);
