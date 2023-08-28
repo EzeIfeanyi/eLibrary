@@ -2,7 +2,6 @@
 
 public class Genre : BaseEntity
 {
-    public string Id { get; set; }
     public string CategoryId { get; set; }
     public string Name { get; set; }
     public DateTime CreatedAt { get; set; }

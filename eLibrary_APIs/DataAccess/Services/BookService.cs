@@ -26,18 +26,14 @@ namespace eLibrary_APIs.DataAccess.Services
             return books.FirstOrDefault(book => book.Id == Id)!;
         }
 
-        public async Task<IEnumerable<Book>> SearchForBook(
-            string Title = "",
-            string Description = "",
-            string Author = "",
-            string ISBN = "")
+        public async Task<IEnumerable<Book>> SearchForBook(string searchTerm)
         {
             return (await GetAllBooks())
                 .Where(
-                book => book.Title.ToLower().Contains(Title.ToLower()) || 
-                book.Description.ToLower().Contains(Description.ToLower()) ||
-                book.Author.ToLower().Contains(Author.ToLower()) ||
-                book.Isbn == ISBN
+                book => book.Title.ToLower().Contains(searchTerm.ToLower()) || 
+                book.Description.ToLower().Contains(searchTerm.ToLower()) ||
+                book.Author.ToLower().Contains(searchTerm.ToLower()) ||
+                book.Isbn == searchTerm
                 ).ToList();
         }
 

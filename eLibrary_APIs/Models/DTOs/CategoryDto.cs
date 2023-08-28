@@ -1,10 +1,8 @@
-﻿namespace eLibrary_APIs.Models;
+﻿namespace eLibrary_APIs.Models.DTOs;
 
-public class Category: BaseEntity
+public class CategoryDto
 {
     public string Name { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
-
-    public ICollection<Genre> Genres { get; set; }
 }

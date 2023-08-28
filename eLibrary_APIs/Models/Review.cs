@@ -4,7 +4,6 @@ namespace eLibrary_APIs.Models;
 
 public class Review: BaseEntity
 {
-    public string Id { get; set; }
     public string BookId { get; set; }
     public string? Title { get; set; }
     public string? Text { get; set; }

@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using eLibrary_APIs.DataAccess;
 using eLibrary_APIs.DataAccess.Services;
 using eLibrary_APIs.Models;
 using eLibrary_APIs.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace eLibrary_APIs.Controllers
 {
@@ -20,7 +18,7 @@ namespace eLibrary_APIs.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost]
+        [HttpPost("add")]
         public async Task<IActionResult> AddBook([FromBody] BookDto model)
         {
             var book = _mapper.Map<BookDto, Book>(model);
@@ -30,10 +28,35 @@ namespace eLibrary_APIs.Controllers
             return Ok();
         }
 
-        [HttpGet("AllItem")]
-        public async Task<IActionResult> GetAllItem()
+        [HttpGet("all")]
+        public async Task<ActionResult<IEnumerable<Book>>> GetAllItem()
         {
             return Ok(await _bookService.GetAllBooks());
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Book?>> GetBook(string id)
+        {
+            var book = await _bookService.GetBookById(id);
+
+            if (book == null)
+            {
+                return NotFound("Book does not exist");
+            }
+
+            return Ok(book);
+        }
+
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<Book>>> SearchBook(string searchTerm)
+        {
+            return Ok(await _bookService.SearchForBook(searchTerm));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBook(string id)
+        {
+
         }
 
 
