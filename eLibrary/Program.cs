@@ -15,6 +15,8 @@ builder.Services.AddAutoMapper(typeof(MapperProfile));
 
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IMessanger, EmailMessanger>();
+builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddHttpClient();
 
 builder.Services.AddDbContext<eLibraryDbContext>( options =>
 {

@@ -34,3 +34,15 @@ nav {
 .container {
     min-height: 85vh
 }
+
+nav li {
+    width: 6rem;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+nav li:hover {
+    background-color: lightgray;
+}

@@ -1,6 +1,6 @@
-﻿using System.Net.Mail;
+﻿using eLibrary.Services.IServices;
 using System.Net;
-using eLibrary.Services.IServices;
+using System.Net.Mail;
 
 namespace eLibrary.Services;
 
@@ -12,7 +12,7 @@ public class EmailMessanger : IMessanger
         _config = config;
     }
 
-    public string Send(string Subject, string UserEmail ,string Body, string AttachmentPath = "")
+    public string Send(string Subject, string UserEmail, string Body, string AttachmentPath = "")
     {
         try
         {

@@ -13,12 +13,10 @@ namespace eLibrary_APIs.Controllers
     {
         private readonly IBookService _bookService;
         private readonly IMapper _mapper;
-        private readonly ApiDbContext _context;
-        public BookController(IBookService bookService, IMapper mapper, ApiDbContext context)
+        public BookController(IBookService bookService, IMapper mapper)
         {
             _bookService = bookService;
             _mapper = mapper;
-            _context = context;
         }
 
         [HttpPost("add")]
@@ -32,7 +30,7 @@ namespace eLibrary_APIs.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<ActionResult<IEnumerable<Book>>> GetAllItem()
+        public async Task<ActionResult<IEnumerable<Book>>> GetAllBooks()
         {
             return Ok(await _bookService.GetAllBooks());
         }
@@ -59,7 +57,7 @@ namespace eLibrary_APIs.Controllers
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(string id, [FromBody] BookDto model)
         {
-            var book = await _context.Books.FindAsync(id);
+            var book = await _bookService.GetBookById(id);
 
             if (book  != null)
             {
@@ -72,10 +70,10 @@ namespace eLibrary_APIs.Controllers
             return BadRequest();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteBook(string id)
         {
-            var book = await _context.Books.FindAsync(id);
+            var book = await _bookService.GetBookById(id);
 
             if (book == null)
                 return NotFound("User not found");
@@ -83,7 +81,5 @@ namespace eLibrary_APIs.Controllers
             await _bookService.DeleteBook(book);
             return Ok();
         }
-
-
     }
 }

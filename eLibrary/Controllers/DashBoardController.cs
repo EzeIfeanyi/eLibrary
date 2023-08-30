@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eLibrary.Controllers
 {
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "Admin")]
     public class DashBoardController : Controller
     {
         private readonly UserManager<User> _userManager;
@@ -17,8 +17,10 @@ namespace eLibrary.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
+            ViewBag.ActiveLink = "Dashboard";
+
             var book = new Book
             {
 
